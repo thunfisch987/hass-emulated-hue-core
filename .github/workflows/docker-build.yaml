@@ -132,8 +132,6 @@ jobs:
         registry:
           - {
               url: ghcr.io/cvele,
-              username: secrets.GHCR_USERNAME,
-              password: secrets.GHCR_PAT,
               repo: ghcr.io/cvele/hass-emulated-hue-core,
             }
     steps:
@@ -153,8 +151,8 @@ jobs:
         uses: docker/login-action@v3.0.0
         with:
           registry: ${{ matrix.registry.url }}
-          username: ${{ secrets[matrix.registry.username] }}
-          password: ${{ secrets[matrix.registry.password] }}
+          username: ${{ secrets.GHCR_PAT }}
+          password: ${{ secrets.GHCR_USERNAME }}
               
       - name: Push image
         # if: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -190,8 +188,6 @@ jobs:
         registry:
           - {
               url: ghcr.io/cvele,
-              username: GCHR_USERNAME,
-              password: GHCR_PAT,
               repo: ghcr.io/cvele/hass-emulated-hue-core,
             }
     steps:
@@ -207,8 +203,8 @@ jobs:
         uses: docker/login-action@v3.0.0
         with:
           registry: ${{ matrix.registry.url }}
-          username: ${{ secrets[matrix.registry.username] }}
-          password: ${{ secrets[matrix.registry.password] }}
+          username: ${{ secrets.GHCR_USERNAME }}
+          password: ${{ secrets.GHCR_PAT }}
         
       - name: Create Manifest
         # if: ${{ startsWith(github.ref, 'refs/tags/') }}
