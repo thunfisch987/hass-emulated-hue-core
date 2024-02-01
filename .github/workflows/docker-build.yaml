@@ -132,8 +132,8 @@ jobs:
         registry:
           - {
               url: ghcr.io/cvele,
-              username: GCHR_USERNAME,
-              password: GHCR_PAT,
+              username: cvele,
+              password: secrets.GHCR_PAT,
               repo: ghcr.io/cvele/hass-emulated-hue-core,
             }
     steps:
