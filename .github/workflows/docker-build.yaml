@@ -132,7 +132,7 @@ jobs:
         registry:
           - {
               url: ghcr.io/cvele,
-              username: cvele,
+              username: secrets.GHCR_USERNAME,
               password: secrets.GHCR_PAT,
               repo: ghcr.io/cvele/hass-emulated-hue-core,
             }
@@ -149,10 +149,13 @@ jobs:
         run: |
           docker load --input ci-${{ matrix.arch }}-${{ github.run_number }}.tar.gz
 
-      - name: Docker login
-        run: |
-          echo "${{ secrets[matrix.registry.password] }}" | docker login ${{ matrix.registry.url }} -u ${{ secrets[matrix.registry.username] }} --password-stdin
-
+      - name: Docker Login
+      uses: docker/login-action@v3.0.0
+      with:
+        registry: ${{ matrix.registry.url }}
+        username: ${{ secrets[matrix.registry.username] }}
+        password: ${{ secrets[matrix.registry.password] }}
+              
       - name: Push image
         # if: ${{ startsWith(github.ref, 'refs/tags/') }}
         if: ${{ github.ref == 'refs/heads/master' }}
@@ -199,11 +202,14 @@ jobs:
         run: |
           export DOCKER_CLI_EXPERIMENTAL="enabled"
           echo "DOCKER_CLI_EXPERIMENTAL=${DOCKER_CLI_EXPERIMENTAL}" >> $GITHUB_ENV
-
-      - name: Docker login
-        run: |
-          docker login ${{ matrix.registry.url }} -u ${{ secrets[matrix.registry.username] }} -p ${{ secrets[matrix.registry.password] }}
-
+      
+      - name: Docker Login
+      uses: docker/login-action@v3.0.0
+      with:
+        registry: ${{ matrix.registry.url }}
+        username: ${{ secrets[matrix.registry.username] }}
+        password: ${{ secrets[matrix.registry.password] }}
+        
       - name: Create Manifest
         # if: ${{ startsWith(github.ref, 'refs/tags/') }}
         if: ${{ github.ref == 'refs/heads/master' }}
