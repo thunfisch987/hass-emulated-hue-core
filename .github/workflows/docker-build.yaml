@@ -151,7 +151,7 @@ jobs:
 
       - name: Docker login
         run: |
-          docker login ${{ matrix.registry.url }} -u ${{ secrets[matrix.registry.username] }} -p ${{ secrets[matrix.registry.password] }}
+          echo "${{ secrets[matrix.registry.password] }}" | docker login ${{ matrix.registry.url }} -u ${{ secrets[matrix.registry.username] }} --password-stdin
 
       - name: Push image
         # if: ${{ startsWith(github.ref, 'refs/tags/') }}
